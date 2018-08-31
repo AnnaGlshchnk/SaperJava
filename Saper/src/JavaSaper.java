@@ -1,5 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import saper.Box;
 import saper.Coord;
 import saper.Game;
@@ -44,6 +47,23 @@ public class JavaSaper extends JFrame {
             }
         };
 
+        panel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+               int x = e.getX() / image_size;
+               int y = e.getY() / image_size;
+               Coord coord = new Coord(x,y);
+               if (e.getButton() == MouseEvent.BUTTON1)
+                   game.pressLeftButton(coord);
+                if (e.getButton() == MouseEvent.BUTTON3)
+                    game.pressRightButton(coord);
+                if (e.getButton() == MouseEvent.BUTTON2)
+                    game.start();
+               panel.repaint();
+            }
+        });
+
         panel.setPreferredSize(new Dimension(Ranges.getSize().x * image_size,
                 Ranges.getSize().y * image_size));
         add(panel);
@@ -54,11 +74,11 @@ public class JavaSaper extends JFrame {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Сапер");
-        setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);
-        setIconImage(getImage("icon"));
         pack();
+        setLocationRelativeTo(null);
+        setIconImage(getImage("icon"));
     }
 
     private void setImages(){
