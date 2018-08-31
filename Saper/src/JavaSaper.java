@@ -2,13 +2,17 @@ import javax.swing.*;
 import java.awt.*;
 import saper.Box;
 import saper.Coord;
+import saper.Game;
 import saper.Ranges;
 
 public class JavaSaper extends JFrame {
 
+    private Game game;
+
     private JPanel panel;
     private final int cols = 9;
     private  final int rows = 9;
+    private  final  int BOMBS = 10;
     private final int image_size = 50;
 
     public static void main(String[] args) {
@@ -18,7 +22,8 @@ public class JavaSaper extends JFrame {
 
     private JavaSaper (){
 
-        Ranges.setSize( new Coord(cols, rows));
+        game = new Game(cols, rows, BOMBS);
+        game.start();
         setImages();
         initPanel();
         initFrame();
@@ -31,11 +36,11 @@ public class JavaSaper extends JFrame {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                for (Coord coord: Ranges.getAllCoords()) {
+                for (Coord coord: Ranges.getAllCoords())
 
-                    g.drawImage((Image) Box.values()[(coord.x + coord.y)% Box.values().length].image,
+                    g.drawImage((Image) game.getBox(coord).image,
                             coord.x*image_size, coord.y * image_size, this);
-                }
+
             }
         };
 
@@ -46,13 +51,14 @@ public class JavaSaper extends JFrame {
 
     private void initFrame (){
 
-        pack();
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Сапер");
         setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);
         setIconImage(getImage("icon"));
+        pack();
     }
 
     private void setImages(){
