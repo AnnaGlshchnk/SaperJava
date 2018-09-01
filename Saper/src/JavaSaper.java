@@ -13,6 +13,8 @@ public class JavaSaper extends JFrame {
     private Game game;
 
     private JPanel panel;
+    private JLabel label;
+
     private final int cols = 9;
     private  final int rows = 9;
     private  final  int BOMBS = 10;
@@ -28,9 +30,16 @@ public class JavaSaper extends JFrame {
         game = new Game(cols, rows, BOMBS);
         game.start();
         setImages();
+        initLabel();
         initPanel();
         initFrame();
 
+    }
+
+    private void initLabel(){
+
+        label = new JLabel("Welcome");
+        add(label, BorderLayout.SOUTH);
     }
 
     private void initPanel(){
@@ -60,6 +69,8 @@ public class JavaSaper extends JFrame {
                     game.pressRightButton(coord);
                 if (e.getButton() == MouseEvent.BUTTON2)
                     game.start();
+
+                label.setText(getMessage());
                panel.repaint();
             }
         });
@@ -69,6 +80,16 @@ public class JavaSaper extends JFrame {
         add(panel);
     }
 
+    private String getMessage() {
+
+        switch (game.getState()){
+            case PLAYED: return "Think twice!";
+            case BOMBED: return  "You Lose!";
+            case WiNNER: return "Congratulations!";
+            default: return "Welcome";
+        }
+    }
+
     private void initFrame (){
 
 
@@ -76,9 +97,9 @@ public class JavaSaper extends JFrame {
         setTitle("Сапер");
         setResizable(false);
         setVisible(true);
-        pack();
         setLocationRelativeTo(null);
         setIconImage(getImage("icon"));
+        pack();
     }
 
     private void setImages(){
